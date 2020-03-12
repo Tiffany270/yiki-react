@@ -1,6 +1,20 @@
-const { injectBabelPlugin } = require('react-app-rewired');
-module.exports = function override(config, env) {
-    config = injectBabelPlugin(['import', 
-        { libraryName: 'antd-mobile', libraryDirectory: 'es', style: 'css' }], config);
-    return config;
-};
+const {override, 
+    addBabelPlugins,
+    useBabelRc,
+    addDecoratorsLegacy, 
+    disableEsLint} = require('customize-cra');
+function myOverrides(config) {
+    // do stuff to config
+    return config
+}
+
+module.exports = override(
+    myOverrides,
+    addDecoratorsLegacy(),
+    disableEsLint(),
+  
+    addBabelPlugins(
+        ['@babel/syntax-dynamic-import', { legacy: true }],
+      ), useBabelRc(),
+    
+);
