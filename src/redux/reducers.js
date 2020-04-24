@@ -3,27 +3,28 @@
  */
 
 import { combineReducers } from 'redux'
-import { INCR, DECR } from './action-types'
+import {AUTH_SUCCESS, ERROR_MSG } from './action-types'
 
-function r_test(state = 0, acion) {
-    return state;
+const inituser = {
+    username: '',
+    usertype: '',
+    msg: '',//错误信息
 }
-
- function redux_test(state = 0, action) {
+function user(state = inituser, action) {
     switch (action.type) {
-        case INCR:
-            return state + action.data
-        case DECR:
-            return state - action.data
-
+        case AUTH_SUCCESS:
+            return { ...action.data}
+        case ERROR_MSG:
+            return { ...state, msg: action.data }
         default:
-            return state;
+            return state
     }
 
 }
 
+
+
 // 向外暴露状态：
 export default combineReducers({
-    r_test,
-    redux_test
+    user
 })
