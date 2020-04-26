@@ -7,10 +7,6 @@ import HeaderSelector from '../../components/hearder-select/hearder-select'
 
 class BossInfo extends Component {
 
-
-
-
-
     state = {
         header: '',
         company: '',

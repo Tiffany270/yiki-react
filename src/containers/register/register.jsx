@@ -15,7 +15,7 @@ class Register extends Component {
         username: '',
         password: '',
         password2: '',
-        usertype: 'A'            // A/B
+        usertype: '招聘'            // A/B
     }
 
     register = () => {
@@ -74,12 +74,12 @@ class Register extends Component {
                             <span>TYPE:</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Radio
-                                checked={this.state.usertype === 'A'}
-                                onChange={() => this.handleChange('usertype', 'A')}>A</Radio>
+                                checked={this.state.usertype === '招聘'}
+                                onChange={() => this.handleChange('usertype', '招聘')}>招聘</Radio>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         <Radio
-                                checked={this.state.usertype === 'B'}
-                                onChange={() => this.handleChange('usertype', 'B')}>B</Radio>
+                                checked={this.state.usertype === '应聘'}
+                                onChange={() => this.handleChange('usertype', '应聘')}>应聘</Radio>
                         </ListItem>
                         <WhiteSpace />
                         <Button

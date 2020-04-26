@@ -27,8 +27,8 @@ export default class Main extends Component {
                     onClick={this.logout}
                 >LOGINOUT</Button>
                 <Switch>
-                    <Route path='/boss' component={BossInfo} />
-                    <Route path='/person' component={PersonInfo} />
+                    <Route path='/bossinfo' component={BossInfo} />
+                    <Route path='/personinfo' component={PersonInfo} />
                 </Switch>
             </HashRouter>
         )
