@@ -9,6 +9,7 @@ import Main from './containers/main/main'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 
+// Provider wraps up your React application and makes it aware of the entire Redux's store.
     ReactDOM.render(
         <Provider store={store}>
 

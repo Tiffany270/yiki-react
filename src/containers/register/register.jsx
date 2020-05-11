@@ -4,8 +4,13 @@ import {
 } from 'antd-mobile'
 import Logo from '../../components/logo/logo'
 import ListItem from 'antd-mobile/lib/list/ListItem'
-// http
+
+// 'connect' from 'react-redux', not 'redux'
+// it connects a React component with the Redux store.
 import { connect } from 'react-redux'
+
+
+// http
 import { register } from '../../redux/actions'
 import { Redirect } from 'react-router-dom'
 
@@ -98,7 +103,9 @@ class Register extends Component {
     }
 }
 
-export default connect(
-    state => ({ user: state.user }),
-    { register }
-)(Register)
+export default connect(// state: It comes from the reducer
+    state => ({ user: state.user }),{ register }
+)(Register)// This way it can update the global state by dispatching the addArticle action.
+
+// order: action->https->dispatch->reducer->update state
+// params : connect(state)(component)

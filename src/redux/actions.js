@@ -1,19 +1,26 @@
 /**
  * 包含action creator
  * 同步&异步
+ * 
+ * 
+ * 
+ *  action: a reducer know when to generate the next state
+ *  "dispatching an action" means sending out a signal to the store.
  */
-import { INCR, DECR } from '../redux/action-types'
-import { regRegister, reglogin } from '../api/index'
+import {
+    regRegister,
+    reglogin,
+    req_update
+} from '../api/index'
 import {
     AUTH_SUCCESS,
-    ERROR_MSG
+    ERROR_MSG,
+    RESET_USER,
+    RECEIVE_USER
 } from './action-types'
 import {
     Toast
 } from 'antd-mobile'
-
-export const incr = (number) => ({ type: INCR, data: number })
-export const decr = (number) => ({ type: DECR, data: number })
 
 const authSuccess = (user) => ({
     type: AUTH_SUCCESS,
@@ -25,12 +32,20 @@ const errorMsg = (msg) => ({
     data: msg
 })
 
+const receiveUser = (user) => ({
+    type: RECEIVE_USER,
+    data: user
+})
 
+const resetUser = (user) => ({
+    type: RESET_USER,
+    data: user
+})
 
 // 写注册的逻辑
 export const register = (user) => {
     const { username, password: userpsw, password2, usertype } = user
-    
+
     return async dispatch => {
 
         // 发送注册请求
@@ -44,25 +59,36 @@ export const register = (user) => {
         }
     }
 }
-
-
-
 // 登录的逻辑
-
 export const login = (user) => {
     const { username, password: userpsw } = user
     //写一些发送前的判断
+    //...
 
-    
-    return async dispatch => {
+    /*
+     When an action is dispatched, the store forwards a message (the action object) to the reducer.*/
+    return async dispatch => {// 分发给->（看reduces.js)->reducer
         const res = await reglogin({ username, userpsw })
         if (res.data.status === 227) {
             Toast.success('登录成功');
-
             dispatch(authSuccess(res.data))
         } else {
-            Toast.fail(res.data.msg, 2);
-            dispatch(errorMsg(res.data.msg))
+            Toast.fail(res.msg, 2);
+            dispatch(errorMsg(res.msg))
         }
     }
+}
+
+//登录完成跳转的完善页面
+export const updateInfo = (user) => {
+    return async dispatch => {
+        const res = await req_update(user);
+        console.log(res);
+        if (res.data.status === 227) {
+            dispatch(receiveUser(res.data))
+        } else {
+            dispatch(resetUser(res.msg))
+        }
+    }
+
 }

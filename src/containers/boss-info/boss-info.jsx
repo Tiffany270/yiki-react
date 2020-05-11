@@ -4,11 +4,14 @@ import {
 } from 'antd-mobile'
 import { connect } from 'react-redux'
 import HeaderSelector from '../../components/hearder-select/hearder-select'
+import { updateInfo } from '../../redux/actions'
+import { Redirect } from 'react-router-dom'
 
 class BossInfo extends Component {
 
     state = {
-        header: '',
+        userid: '',
+        userheader: '',
         company: '',
         occupation: '',
         salary: '',
@@ -19,23 +22,39 @@ class BossInfo extends Component {
             [name]: value
         })
     }
+    componentWillMount() {
+        const store = JSON.parse(localStorage.getItem('yiki_user'));
 
+        if (store) {
+            this.setState({
+                userid: store['data']['userid']
+            })
+        }
+    }
     setHeader = (header) => {
         this.setState({
-            header: header
+            userheader: header
         })
     }
 
     save = () => {
-        console.log(this.state);
+        this.props.updateInfo(this.state);
 
     }
 
     render() {
+
+        const res = this.props.user
+        console.log(res);
+
+        if (res.data.userheader) {
+            // const path = type ===''
+            return <Redirect to={'main'} />
+        }
         return (
             <div>
                 <NavBar>公司信息完善</NavBar>
-                <HeaderSelector setHeader={this.setHeader}/>
+                <HeaderSelector setHeader={this.setHeader} />
                 <InputItem
                     onChange={val => { this.handleChange('company', val) }}
                     placeholder='YOUR COMPANY'>公司：</InputItem>
@@ -58,5 +77,5 @@ class BossInfo extends Component {
 
 export default connect(
     state => ({ user: state.user }),
-    {}//放action函数
+    { updateInfo }//放action函数
 )(BossInfo)
