@@ -62,19 +62,17 @@ export const register = (user) => {
 // 登录的逻辑
 export const login = (user) => {
     const { username, password: userpsw } = user
-    //写一些发送前的判断
-    //...
-
     /*
-     When an action is dispatched, the store forwards a message (the action object) to the reducer.*/
+     When an action is dispatched, 
+     the store forwards a message (the action object) to the reducer.*/
     return async dispatch => {// 分发给->（看reduces.js)->reducer
         const res = await reglogin({ username, userpsw })
         if (res.data.status === 227) {
             Toast.success('登录成功');
             dispatch(authSuccess(res.data))
         } else {
-            Toast.fail(res.msg, 2);
-            dispatch(errorMsg(res.msg))
+            Toast.fail(res.data.msg, 2);
+            dispatch(errorMsg(res.data.msg))
         }
     }
 }
@@ -83,7 +81,6 @@ export const login = (user) => {
 export const updateInfo = (user) => {
     return async dispatch => {
         const res = await req_update(user);
-        console.log(res);
         if (res.data.status === 227) {
             dispatch(receiveUser(res.data))
         } else {

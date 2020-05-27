@@ -22,7 +22,7 @@ class PersonInfo extends Component {
 
         if (store) {
             this.setState({
-                userid: store['data']['userid']
+                userid: store['userid']
             })
         }
     }
@@ -47,8 +47,7 @@ class PersonInfo extends Component {
 
         //render里面最好用props里的东西……maybe
         const res = this.props.user
-
-        if (res.data.userheader) {
+        if (res.userheader) {
             // const path = type ===''
             return <Redirect to={'main'} />
         }

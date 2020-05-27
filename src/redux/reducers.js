@@ -12,7 +12,6 @@ import { combineReducers } from 'redux'
 import {
     AUTH_SUCCESS,
     ERROR_MSG,
-    UPDATE_SUCCESS,
     RECEIVE_USER,
     RESET_USER
 } from './action-types'
@@ -23,22 +22,29 @@ const inituser = {
     msg: '',//错误信息
 }
 function user(state = inituser, action) {
-
+    const res = action.data;
     switch (action.type) {
         case AUTH_SUCCESS://登录用
-            return { ...action.data, redirectTo: getRedirecTo(action['data']['data'].usertype, action['data']['data'].userheader) }
-        case ERROR_MSG:// 错误用
-            return { ...state, msg: action.data }
-        case UPDATE_SUCCESS://更新信息用
+            const { usertype, userheader } = res.data;
             return {
-                ...state, msg: action.data, redirectTo: getRedirecTo(action['data']['data'].usertype,
-                    action['data']['data'].userheader)
+                ...res.data,
+                msg: res.msg,
+                redirectTo: getRedirecTo(usertype, userheader)
             }
-        case RECEIVE_USER:
-            return action.data
+        case ERROR_MSG:// 错误用
+            return {
+                ...state,
+                msg: res.msg
+            }
+
+        case RECEIVE_USER://更新信息
+            return res.data;
+
         case RESET_USER:
-            return { ...inituser,//清除原有数据->login
-                 msg: action.data }
+            return {
+                ...inituser,//清除原有数据->login
+                msg: res.msg
+            }
         default:
             return state
     }

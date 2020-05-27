@@ -15,11 +15,7 @@ class Person extends Component {
     render() {
         return (
             <div>
-                <NavBar>公司信息完善</NavBar>
-
-                <Button
-                    onClick={this.save}
-                    type="primary">保&nbsp;&nbsp;存</Button>
+                <NavBar>个人页面</NavBar>
             </div>
         )
     }

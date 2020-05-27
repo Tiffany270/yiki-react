@@ -42,6 +42,7 @@ class Login extends Component {
     render() {
 
         const user = this.props.user;
+
         if (user.msg === 'ok') {
             localStorage.setItem('yiki_user', JSON.stringify(user));
             return <Redirect to={user.redirectTo} />

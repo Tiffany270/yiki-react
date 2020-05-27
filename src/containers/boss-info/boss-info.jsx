@@ -27,7 +27,7 @@ class BossInfo extends Component {
 
         if (store) {
             this.setState({
-                userid: store['data']['userid']
+                userid: store['userid']
             })
         }
     }
@@ -45,9 +45,8 @@ class BossInfo extends Component {
     render() {
 
         const res = this.props.user
-        console.log(res);
 
-        if (res.data.userheader) {
+        if (res.userheader) {
             // const path = type ===''
             return <Redirect to={'main'} />
         }
