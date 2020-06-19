@@ -8,3 +8,5 @@ export const reglogin =
 export const req_update = 
 (user)=>ajax('/react/updataInfo',user,'POST');
 
+export const req_getAllUserList=
+(list)=>ajax('/react/userList');

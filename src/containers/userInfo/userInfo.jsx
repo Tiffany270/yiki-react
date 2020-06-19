@@ -1,25 +1,64 @@
 import React, { Component } from 'react'
 import {
-    NavBar, InputItem, Button, TextareaItem
+    Button, Result, List, WhiteSpace
 } from 'antd-mobile'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Brief } from 'antd-mobile/lib/list/ListItem';
+
+const Item = List.Item;
 
 class UserInfo extends Component {
+
 
 
     save = () => {
 
     }
 
+    logout = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
+
     render() {
+       
+        const {company,intro,occupation,salary,userheader,userid,username,usertype} = JSON.parse(localStorage.getItem('yiki_user'));
         return (
             <div>
-                <NavBar>公司信息完善</NavBar>
+                <center>
+                    <h4>Persional Info</h4>
+                </center>
+                <Result
+                    title={username}
+                    message={company}
+                    img={<img
+                        alt="pic"
+                        style={{ width: 50 }}
+                        src={require(`../../assets/imgs/${userheader}.jpeg`)} />}>
+                </Result>
 
-                <Button
-                    onClick={this.save}
-                    type="primary">保&nbsp;&nbsp;存</Button>
+                <List renderHeader={() => 'INFO'}>
+                    <Item >
+                        <Brief>OCC:{occupation}</Brief>
+                        <Brief>INFO:{intro}</Brief>
+                        <Brief>SALARY:{salary}K</Brief>
+                    </Item>
+                    <WhiteSpace></WhiteSpace>
+                </List>
+
+                <List>
+                    <Button
+                        onClick={this.save}
+                        type="primary">修&nbsp;&nbsp;改</Button>
+                </List>
+                <List>
+
+                    <Button
+                        type='warning'
+                        onClick={this.logout}
+                    >LOGINOUT</Button>
+                </List>
+
             </div>
         )
     }

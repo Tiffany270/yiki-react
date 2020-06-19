@@ -15,7 +15,9 @@ class BossInfo extends Component {
         company: '',
         occupation: '',
         salary: '',
-        intro: ''
+        intro: '',
+        usertype: '招聘'
+
     }
     handleChange = (name, value) => {
         this.setState({
@@ -45,9 +47,9 @@ class BossInfo extends Component {
     render() {
 
         const res = this.props.user
-
         if (res.userheader) {
-            // const path = type ===''
+            localStorage.setItem('yiki_user', JSON.stringify(res));
+
             return <Redirect to={'main'} />
         }
         return (

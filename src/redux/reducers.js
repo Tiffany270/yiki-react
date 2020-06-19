@@ -13,7 +13,8 @@ import {
     AUTH_SUCCESS,
     ERROR_MSG,
     RECEIVE_USER,
-    RESET_USER
+    RESET_USER,
+    RECEIVE_LIST
 } from './action-types'
 
 const inituser = {
@@ -21,11 +22,24 @@ const inituser = {
     usertype: '',
     msg: '',//错误信息
 }
+
+function list(state = inituser, action) {
+    const res = action.data;
+    switch (action.type) {
+        case RECEIVE_LIST:
+            return res.data;
+        default:
+            return state
+    }
+}
+
+
 function user(state = inituser, action) {
     const res = action.data;
     switch (action.type) {
         case AUTH_SUCCESS://登录用
-            const { usertype, userheader } = res.data;
+        const { usertype, userheader } = res.data;
+
             return {
                 ...res.data,
                 msg: res.msg,
@@ -38,8 +52,13 @@ function user(state = inituser, action) {
             }
 
         case RECEIVE_USER://更新信息
-            return res.data;
 
+        const data = res.data;
+            return {
+                ...res.data,
+                msg: res.msg,
+                redirectTo: getRedirecTo(data.usertype, data.userheader)
+            }
         case RESET_USER:
             return {
                 ...inituser,//清除原有数据->login
@@ -56,11 +75,12 @@ function getRedirecTo(type, header) {
         path = '/boss'
     }
     else if (type === '应聘') {
-        path = 'person'
+        path = '/person'
     }
     if (!header) {
         path += 'info'
     }
+
     return path;
 }
 
@@ -68,5 +88,5 @@ function getRedirecTo(type, header) {
 
 // 向外暴露状态：
 export default combineReducers({
-    user, getRedirecTo
+    user, getRedirecTo, list
 })

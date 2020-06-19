@@ -9,7 +9,10 @@ import { Redirect } from 'react-router-dom'
 import Boss from '../boss/boss';
 import Person from '../person/person';
 import UserInfo from '../userInfo/userInfo';
+import Message from '../message/message';
 import NavFooter from '../../components/nav-footer/nav-footer';
+
+
 export default class Main extends Component {
 
     navList = [
@@ -26,6 +29,14 @@ export default class Main extends Component {
             icon: 'person',
             text: 'PERSON'
         },
+
+        {
+            path: '/message',
+            component: Message,
+            title: 'MESSAGE',
+            icon: 'info',
+            text: 'MESSAGE'
+        },
         {
             path: '/userInfo',
             component: UserInfo,
@@ -35,28 +46,37 @@ export default class Main extends Component {
         },
     ]
 
-    logout = () => {
-        localStorage.clear();
-        window.location.reload();
-    }
+
     render() {
-        if (!localStorage.getItem('yiki_user')) {
+
+        const localdata = localStorage.getItem('yiki_user');
+        if (!localdata) {
             return <Redirect to={'login'} />
         }
+        const localpath = this.props.location.pathname;
         const { navList } = this;
-        const path = this.props.location.pathname;
+        const path = localdata ? JSON.parse(localdata).redirectTo : localpath;
         const currentNav = navList.find(nav => nav.path === path);
+        const userType = JSON.parse(localdata).usertype;
 
+        if (userType === '应聘') {
+            const index = navList.findIndex(x => x.path === '/boss');
+            if (index !== -1) {
+                navList.splice(index, 1);
+            }
+        } else {
+            const index = navList.findIndex(x => x.path === '/person');
+            if (index !== -1) {
+                navList.splice(index, 1);
+            }
+        }
 
         return (
             <HashRouter>
-                <Button
-                    onClick={this.logout}
-                >LOGINOUT</Button>
 
                 {currentNav ?
                     <center>
-                        <h4>{currentNav.text}</h4>
+                        <h4>I'm {currentNav.text}</h4>
                     </center>
                     : null}
 
@@ -74,6 +94,7 @@ export default class Main extends Component {
 
                    */}
                 <Switch>
+
                     {navList.map(nav => (
                         <Route
                             key={nav.path}
@@ -82,6 +103,9 @@ export default class Main extends Component {
                         ></Route>
                     )
                     )}
+                    <Redirect
+                        to={currentNav.path}
+                    ></Redirect>
                 </Switch>
 
 
@@ -99,3 +123,4 @@ onClick={()=>this.func()} func(){...}
 onClick={this,func()} func=()=>{...} better
 but pass parms: onClick={(e) => this.func(id, e)} better
 */
+

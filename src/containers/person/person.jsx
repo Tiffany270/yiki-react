@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import {
-    NavBar, InputItem, Button, TextareaItem
+    NavBar,Result
 } from 'antd-mobile'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 
 class Person extends Component {
 

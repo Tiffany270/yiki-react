@@ -15,7 +15,8 @@ class PersonInfo extends Component {
         userheader: '',
         occupation: '',
         salary: '',
-        intro: ''
+        intro: '',
+        usertype: '应聘'
     }
     componentWillMount() {
         const store = JSON.parse(localStorage.getItem('yiki_user'));
@@ -48,7 +49,7 @@ class PersonInfo extends Component {
         //render里面最好用props里的东西……maybe
         const res = this.props.user
         if (res.userheader) {
-            // const path = type ===''
+            localStorage.setItem('yiki_user', JSON.stringify(res));
             return <Redirect to={'main'} />
         }
 

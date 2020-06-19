@@ -16,7 +16,8 @@ import {
     AUTH_SUCCESS,
     ERROR_MSG,
     RESET_USER,
-    RECEIVE_USER
+    RECEIVE_USER,
+    RECEIVE_LIST
 } from './action-types'
 import {
     Toast
@@ -35,6 +36,13 @@ const errorMsg = (msg) => ({
 const receiveUser = (user) => ({
     type: RECEIVE_USER,
     data: user
+})
+
+
+// 获取所有信息
+const receiveList = (list) => ({
+    type: RECEIVE_LIST,
+    data: list
 })
 
 const resetUser = (user) => ({
@@ -88,4 +96,15 @@ export const updateInfo = (user) => {
         }
     }
 
+}
+
+// Get a list of all users information
+export const getAllUsers=(list)=>{
+    return async dispatch =>{
+        if (list.data.status === 227) {
+            dispatch(receiveList(list.data))
+        } else {
+            dispatch(errorMsg(list.msg))
+        }
+    }
 }

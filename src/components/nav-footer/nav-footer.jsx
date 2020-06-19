@@ -3,6 +3,9 @@ import { TabBar } from 'antd-mobile'
 import { PropTypes } from 'prop-types'
 
 import { withRouter } from 'react-router-dom'
+
+import "../componets.css";
+
 const Item = TabBar.Item;
 
 class NavFooter extends Component {
@@ -16,28 +19,33 @@ class NavFooter extends Component {
         const { navList } = this.props;
         const path = this.props.location.pathname;
         return (
-            <TabBar>{
-                navList.map((nav, index) => (
-                    <Item
-                        icon={{ uri: require(`../../assets/imgs/${index + 1}.jpeg`) }}
-                        title={nav.text}
-                        key={nav.path}
-                        selected={path === nav.path}
-                        selectedIcon={{ uri: require(`../../assets/imgs/10.jpeg`) }}
-                        onPress={() =>
-                            this.props.history.replace(nav.path)}
-                    />
+            <div className="footer">
 
-                    /*
-                    Note :
-                    Route component as this.props.location
-                    Route render as ({ location }) => ()
-                    Route children as ({ location }) => ()
-                    withRouter as this.props.location
-                    */
-                ))
-            }
-            </TabBar>
+                <TabBar>{
+                    navList.map((nav, index) => (
+                        <Item
+                            icon={{ uri: require(`../../assets/imgs/${index + 1}.jpeg`) }}
+                            title={nav.text}
+                            key={nav.path}
+                            selected={path === nav.path}
+                            selectedIcon={{ uri: require(`../../assets/imgs/10.jpeg`) }}
+                            onPress={() =>
+                                this.props.history.replace(nav.path)}
+                        />
+
+                        /*
+                        Note :
+                        Route component as this.props.location
+                        Route render as ({ location }) => ()
+                        Route children as ({ location }) => ()
+                        withRouter as this.props.location
+                        */
+                    ))
+                }
+                </TabBar>
+
+            </div>
+
         )
     }
 }

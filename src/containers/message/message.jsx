@@ -15,11 +15,10 @@ class Message extends Component {
     render() {
         return (
             <div>
-                <NavBar>公司信息完善</NavBar>
+               <center>
+                    <h4>messages</h4>
+                </center>
 
-                <Button
-                    onClick={this.save}
-                    type="primary">保&nbsp;&nbsp;存</Button>
             </div>
         )
     }
