@@ -8,6 +8,8 @@ import { connect } from 'react-redux'
 import { login } from '../../redux/actions'
 import { Redirect } from 'react-router-dom'
 
+import axios from "axios";
+
 
 class Login extends Component {
 
@@ -15,6 +17,25 @@ class Login extends Component {
         username: '',
         password: '',
     }
+
+    // -----start ---- Let's to learn some lifecycle of react ---- 
+
+    componentWillMount() {
+        console.log('componentWillMount');
+
+       
+
+    }
+
+    componentDidMount(){
+        console.log('componentDidMount');
+        axios.get('/allJD').then(x => {
+            console.log(x);
+        });
+    }
+
+    // ----- end ---- Let's to learn some lifecycle of react ---- 
+
 
     login = () => {
 
@@ -38,6 +59,7 @@ class Login extends Component {
     toRegitser = () => {
         this.props.history.replace('/register')
     }
+
 
     render() {
 

@@ -3,6 +3,7 @@ import {
     NavBar,Result
 } from 'antd-mobile'
 import { connect } from 'react-redux'
+import { getAllUsers } from '../../redux/actions'
 
 class Person extends Component {
 
@@ -10,7 +11,9 @@ class Person extends Component {
     save = () => {
 
     }
-
+    componentDidMount() {
+        this.props.getAllUsers(2);
+    }
     render() {
         return (
             <div>
@@ -21,6 +24,6 @@ class Person extends Component {
 }
 
 export default connect(
-    state => ({ user: state.user }),
-    {}
+    state => ({ list: state.list }),//我觉得这里应该是拼接和合并，connect连接reducer和state
+    { getAllUsers }
 )(Person)

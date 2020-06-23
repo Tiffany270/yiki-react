@@ -10,7 +10,8 @@
 import {
     regRegister,
     reglogin,
-    req_update
+    req_update,
+    req_getAllUserList
 } from '../api/index'
 import {
     AUTH_SUCCESS,
@@ -99,12 +100,13 @@ export const updateInfo = (user) => {
 }
 
 // Get a list of all users information
-export const getAllUsers=(list)=>{
+export const getAllUsers=(type)=>{
     return async dispatch =>{
-        if (list.data.status === 227) {
-            dispatch(receiveList(list.data))
+        const res = await req_getAllUserList(type);
+        if (res.data.status === 227) {
+            dispatch(receiveList(res.data))
         } else {
-            dispatch(errorMsg(list.msg))
+            dispatch(errorMsg(res.msg))
         }
     }
 }

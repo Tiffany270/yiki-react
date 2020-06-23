@@ -23,7 +23,8 @@ const inituser = {
     msg: '',//错误信息
 }
 
-function list(state = inituser, action) {
+const initList = []; // http里回调的数据在action里，会分发到页面，自己取
+function list(state = initList, action) {//action = {data:xx,type:xx}
     const res = action.data;
     switch (action.type) {
         case RECEIVE_LIST:
@@ -38,8 +39,7 @@ function user(state = inituser, action) {
     const res = action.data;
     switch (action.type) {
         case AUTH_SUCCESS://登录用
-        const { usertype, userheader } = res.data;
-
+            const { usertype, userheader } = res.data;
             return {
                 ...res.data,
                 msg: res.msg,
@@ -52,8 +52,7 @@ function user(state = inituser, action) {
             }
 
         case RECEIVE_USER://更新信息
-
-        const data = res.data;
+            const data = res.data;
             return {
                 ...res.data,
                 msg: res.msg,
