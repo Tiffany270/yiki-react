@@ -4,6 +4,7 @@ import {
 } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getAllUsers } from '../../redux/actions'
+import ItemList from '../../components/list/list'
 
 class Boss extends Component {
 
@@ -15,11 +16,10 @@ class Boss extends Component {
         this.props.getAllUsers(2);
     }
     render() {
-        console.log(this.props.list)
 
         return (
             <div>
-                <NavBar>公司页面</NavBar>
+                <ItemList list={this.props.list}></ItemList>
             </div>
         )
     }
