@@ -1,0 +1,60 @@
+#chat-send-warrper {
+    position: absolute;
+    bottom: 0;
+}
+
+.am-list-item.am-input-item {
+    width: 130%;
+}
+
+/* ------chat.jsx--start-- */
+#chat-warpper img {
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+
+}
+
+.chat-block {
+    height: 50px;
+}
+
+.isOhter {
+    .chat-header {
+        float: left;
+        width: 10%;
+    }
+
+    .chat-main {
+        float: left;
+    }
+}
+
+.isSelf {
+    .chat-header {
+        float: right;
+        width: 10%;
+
+    }
+
+    .chat-main {
+        float: right;
+        margin-right: 5px;
+    }
+
+    .chat-content {
+        background: wheat;
+    }
+}
+
+.chat-content {
+    margin-top: 10px;
+    background: white;
+    width: 170px;
+    border-radius: 5px;
+    min-height: 9px;
+    padding: 10px;
+
+}
+
+/* ------chat.jsx---end--- */

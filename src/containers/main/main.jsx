@@ -21,13 +21,13 @@ export default class Main extends Component {
             component: Boss,
             title: 'boss list',
             icon: 'boss',
-            text: 'BOSS'
+            text: 'BOSS LIST'
         }, {
             path: '/person',
             component: Person,
             title: 'person list',
             icon: 'person',
-            text: 'PERSON'
+            text: 'CANDIDATES LIST'
         },
 
         {
@@ -76,7 +76,7 @@ export default class Main extends Component {
 
                 {currentNav ?
                     <center>
-                        <h4>I'm {currentNav.text}</h4>
+                        <h4>{currentNav.text}</h4>
                     </center>
                     : null}
 
@@ -93,8 +93,8 @@ export default class Main extends Component {
                    Renders the first child <Route> or <Redirect> that matches the location
 
                    */}
-                <Switch>
 
+                <Switch>
                     {navList.map(nav => (
                         <Route
                             key={nav.path}
@@ -103,9 +103,9 @@ export default class Main extends Component {
                         ></Route>
                     )
                     )}
-                    <Redirect
+                    {/* <Redirect
                         to={currentNav.path}
-                    ></Redirect>
+                    ></Redirect> */}
                 </Switch>
 
 

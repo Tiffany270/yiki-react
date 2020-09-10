@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { WingBlank, WhiteSpace, Card } from 'antd-mobile'
 import "../componets.css";
-
-export default class ItemList extends Component {
+import { withRouter } from 'react-router-dom'
+class ItemList extends Component {
 
     static propTypes = {
         list: PropTypes.array.isRequired
@@ -15,19 +15,20 @@ export default class ItemList extends Component {
         return (
             <WingBlank>
                 {
-                    list.map(item => (
+                    list.map((item, index) => (
                         <div className="test" key={item.userid}>
                             <WhiteSpace />
                             <Card>
                                 <Card.Header
-                                    extra='yiki'
-                                    thumb={require(`../../assets/imgs/1.jpeg`)}
+                                    extra={item.username}
+                                    thumb={require(`../../assets/imgs/${index + 1}.jpeg`)}
+                                    onClick={() => this.props.history.push(`/chat/${item.userid}`)}
                                 >
                                 </Card.Header>
                                 <Card.Body>
-                                    <div>1</div>
-                                    <div>2</div>
-                                    <div>2</div>
+                                    <div>{item.company}</div>
+                                    <div>{item.intro}</div>
+                                    <div>SALARY:{item.salary}K</div>
                                 </Card.Body>
                             </Card>
 
@@ -45,3 +46,5 @@ export default class ItemList extends Component {
     }
 
 }
+
+export default withRouter(ItemList)

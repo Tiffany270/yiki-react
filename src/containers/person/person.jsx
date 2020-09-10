@@ -4,6 +4,7 @@ import {
 } from 'antd-mobile'
 import { connect } from 'react-redux'
 import { getAllUsers } from '../../redux/actions'
+import ItemList from '../../components/list/list'
 
 class Person extends Component {
 
@@ -12,13 +13,13 @@ class Person extends Component {
 
     }
     componentDidMount() {
-        this.props.getAllUsers(2);
+        this.props.getAllUsers(1);
     }
     render() {
         return (
             <div>
-                <NavBar>个人页面</NavBar>
-            </div>
+            <ItemList list={this.props.list}></ItemList>
+        </div>
         )
     }
 }
