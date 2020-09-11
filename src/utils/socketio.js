@@ -1,6 +1,9 @@
 import io from 'socket.io-client'
 
-// const socket = io('ws://localhost:9092')
+const socket = io('ws://localhost:9092')
+
+export default socket;
+
 // const socket = io('ws://149.248.19.225:9092')//wss是https
 
 
@@ -22,7 +25,7 @@ import io from 'socket.io-client'
 //     create_time: new Date()
 // });
 
-// socket.on('receveMsg', (data) => {
-//     console.log('receveMsg', data);
-// })
+socket.on('receveMsg', (data) => {
+    console.log('receveMsg', data);
+})
 

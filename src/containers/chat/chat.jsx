@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavBar, WhiteSpace, Icon, List, InputItem } from 'antd-mobile'
 import "../chat/componets.scss";
+import socketIoSever from '../../utils/socketio'
+import axios from "axios";
 
 class Chat extends Component {
     //     to: 'tiffany',
@@ -14,35 +16,51 @@ class Chat extends Component {
     constructor() {
         super()
         this.state = {
-            txtContent: ''
+            txtContent: '',
+            chatList: []
         }
     }
+    componentDidMount() {
+        const chat_id = this.props.user.userid + "_" + this.props.match.params.userid
+        axios.get('/react_chat/ChatMsgFromId/' + chat_id).then(x => {
 
+            if (x.data) {
+                this.setState({
+                    chatList: x.data.data
+                })
+            }
+
+        });
+    }
     txtChange = (e) => {
         const newVal = e
         this.setState({
             txtContent: newVal
         })
     }
-
     handleSend = () => {
-
         const sendObj = {
             from: this.props.user.userid,
             to: this.props.match.params.userid,
+            chat_id: this.props.user.userid + "_" + this.props.match.params.userid,
             content: this.state.txtContent,
             read: false,
             create_time: (new Date()).valueOf()
         }
-        console.log(sendObj);
+        const content = this.state.txtContent.trim();
+        if (content !== '') {
+            const chatList = this.state.chatList;
+            socketIoSever.emit('sendMsg', sendObj);
+            chatList.push(sendObj);
+            this.setState({
+                chatList: chatList,
+                txtContent: ''
+            })
+        }
 
     }
     render() {
-        const list = [
-            { isOhter: true },
-            { isOhter: false },
-            { isOhter: false }
-        ]
+        const chatList = this.state.chatList ? this.state.chatList : [];
         return (
 
             <div id="chat-warpper">
@@ -57,48 +75,33 @@ class Chat extends Component {
                 </NavBar>
                 <WhiteSpace></WhiteSpace>
 
-                <div
-                    className={['chat-block',
-                        list[0].isOhter ? 'isOhter' : 'isSelf'].join(' ')}>
-                    <div className="chat-header">
-                        <img src={require(`../../assets/imgs/1.jpeg`)}></img>
-                    </div>
-                    <div className="chat-main">
-                        <div className="chat-content">
-                            HI~
-                        </div>
-                    </div>
-                </div>
 
-                <div className={['chat-block',
-                    list[1].isOhter ? 'isOhter' : 'isSelf'].join(' ')}>
-                    <div className="chat-header">
-                        <img src={require(`../../assets/imgs/2.jpeg`)}></img>
-                    </div>
-                    <div className="chat-main">
-                        <div className="chat-content">
-                            HI~
-                        </div>
-                    </div>
-                </div>
+                <div>
+                    {
+                        chatList.map((item, index) => (
+                            <div key={index}
+                                className={['chat-block',
+                                    item.from === this.props.user.userid ? 'isSelf' : 'isOhter'].join(' ')}>
+                                <div className="chat-header">
+                                    <img src={require(`../../assets/imgs/${this.props.user.userheader ? this.props.user.userheader : index + 1}.jpeg`)}></img>
+                                </div>
+                                <div className="chat-main">
+                                    <div className="chat-content">
+                                        {item.content}
+                                    </div>
+                                </div>
+                            </div>
+                        ))
 
-                <div
-                    className={['chat-block',
-                        list[2].isOhter ? 'isOhter' : 'isSelf'].join(' ')}>
-                    <div className="chat-header">
-                        <img src={require(`../../assets/imgs/2.jpeg`)}></img>
-                    </div>
-                    <div className="chat-main">
-                        <div className="chat-content">
-                            HI~
-                        </div>
-                    </div>
-                </div>
+                    }
 
+
+                </div>
 
 
                 <div id='chat-send-warrper'>
                     <InputItem
+                        value={this.state.txtContent}
                         placeholder="pls input..."
                         onChange={(e) => this.txtChange(e)}
                         extra={

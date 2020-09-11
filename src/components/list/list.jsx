@@ -10,6 +10,7 @@ class ItemList extends Component {
     }
 
     render() {
+        console.log(this.props);
 
         const { list } = this.props;
         return (
@@ -21,7 +22,7 @@ class ItemList extends Component {
                             <Card>
                                 <Card.Header
                                     extra={item.username}
-                                    thumb={require(`../../assets/imgs/${index + 1}.jpeg`)}
+                                    thumb={require(`../../assets/imgs/${item.userheader ? item.userheader : index + 1}.jpeg`)}
                                     onClick={() => this.props.history.push(`/chat/${item.userid}`)}
                                 >
                                 </Card.Header>
