@@ -2,17 +2,10 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavBar, WhiteSpace, Icon, List, InputItem } from 'antd-mobile'
 import "../chat/componets.scss";
-import socketIoSever from '../../utils/socketio'
 import axios from "axios";
+import { sendMsg } from '../../redux/actions'
 
 class Chat extends Component {
-    //     to: 'tiffany',
-    //     char_id: 'yiki_tiffany',
-    //     content: 'yiki',
-    //     read: true,
-    //     create_time: new Date()
-
-
     constructor() {
         super()
         this.state = {
@@ -21,16 +14,17 @@ class Chat extends Component {
         }
     }
     componentDidMount() {
-        const chat_id = this.props.user.userid + "_" + this.props.match.params.userid
-        axios.get('/react_chat/ChatMsgFromId/' + chat_id).then(x => {
+        console.log(this.props);
+        // const chat_id = this.props.user.userid + "_" + this.props.match.params.userid
+        // axios.get('/react_chat/ChatMsgFromId/' + chat_id).then(x => {
 
-            if (x.data) {
-                this.setState({
-                    chatList: x.data.data
-                })
-            }
+        //     if (x.data) {
+        //         this.setState({
+        //             chatList: x.data.data
+        //         })
+        //     }
 
-        });
+        // });
     }
     txtChange = (e) => {
         const newVal = e
@@ -49,8 +43,11 @@ class Chat extends Component {
         }
         const content = this.state.txtContent.trim();
         if (content !== '') {
-            const chatList = this.state.chatList;
-            socketIoSever.emit('sendMsg', sendObj);
+            const chatList = this.state.chatList ? this.state.chatList : []
+
+            this.props.sendMsg(sendObj);
+
+
             chatList.push(sendObj);
             this.setState({
                 chatList: chatList,
@@ -117,7 +114,10 @@ class Chat extends Component {
 }
 
 export default connect(
-    state => ({ user: state.user }),
-    {}
+    state => ({//连接reducer里combineReducers里的东西
+        user: state.user,
+        chat: state.chat
+    }),
+    { sendMsg }
 )(Chat)
 

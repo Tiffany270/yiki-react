@@ -10,8 +10,6 @@ class ItemList extends Component {
     }
 
     render() {
-        console.log(this.props);
-
         const { list } = this.props;
         return (
             <WingBlank>

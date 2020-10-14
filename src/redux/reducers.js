@@ -14,7 +14,9 @@ import {
     ERROR_MSG,
     RECEIVE_USER,
     RESET_USER,
-    RECEIVE_LIST
+    RECEIVE_LIST,
+    RECEIVE_MSG,
+    RECEIVE_MSG_LIST
 } from './action-types'
 
 const inituser = {
@@ -22,7 +24,9 @@ const inituser = {
     usertype: '',
     msg: '',//错误信息
 }
-
+/**
+ * 这里每个function 你打印下就发现会全部触发，会根据action.type来返回你要的state
+ */
 const initList = []; // http里回调的数据在action里，会分发到页面，自己取
 function list(state = initList, action) {//action = {data:xx,type:xx}
     const res = action.data;
@@ -33,7 +37,6 @@ function list(state = initList, action) {//action = {data:xx,type:xx}
             return state
     }
 }
-
 
 function user(state = inituser, action) {
     const res = action.data;
@@ -67,7 +70,7 @@ function user(state = inituser, action) {
             return state
     }
 }
-// 返回对应的路由路径
+// return path
 function getRedirecTo(type, header) {
     let path = '';
     if (type === '招聘') {
@@ -83,9 +86,39 @@ function getRedirecTo(type, header) {
     return path;
 }
 
+// ----------- chat ---------
+const initChat = {
+    users: {}, // all users info {userid:{username,header}}
+    chatMsgs: [],// current user's chat msgs
+    unReadCount: 0 // unread msgs's number
+
+}
+/*
+chat status, once logining, user panel should get the chatList 
+*/
+function chat(state = initChat, action) {
+    switch (action.type) {
+        case RECEIVE_MSG_LIST:
+            const { users, chatMsg } = action.data;
+            return {
+                users,
+                chatMsg,
+                unReadCount: 0
+            };
+        case RECEIVE_MSG:
+
+            return;
+
+        default:
+            return state;
+    }
+
+}
+
+
 
 
 // 向外暴露状态：
 export default combineReducers({
-    user, getRedirecTo, list
+    user, getRedirecTo, list, chat
 })

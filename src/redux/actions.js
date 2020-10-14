@@ -11,14 +11,20 @@ import {
     regRegister,
     reglogin,
     req_update,
-    req_getAllUserList
+    req_getAllUserList,
+    req_setReadChatMsg
 } from '../api/index'
+
+import socketIoSever from '../utils/socketio'
+
 import {
     AUTH_SUCCESS,
     ERROR_MSG,
     RESET_USER,
     RECEIVE_USER,
-    RECEIVE_LIST
+    RECEIVE_LIST,
+    RECEIVE_MSG_LIST,
+    RECEIVE_MSG
 } from './action-types'
 import {
     Toast
@@ -51,7 +57,6 @@ const resetUser = (user) => ({
     data: user
 })
 
-// 写注册的逻辑
 export const register = (user) => {
     const { username, password: userpsw, password2, usertype } = user
 
@@ -68,7 +73,6 @@ export const register = (user) => {
         }
     }
 }
-// 登录的逻辑
 export const login = (user) => {
     const { username, password: userpsw } = user
     /*
@@ -77,6 +81,7 @@ export const login = (user) => {
     return async dispatch => {// 分发给->（看reduces.js)->reducer
         const res = await reglogin({ username, userpsw })
         if (res.data.status === 227) {
+            getChatMsgList(res.data, dispatch);//give it dispatch
             Toast.success('登录成功');
             dispatch(authSuccess(res.data))
         } else {
@@ -100,8 +105,8 @@ export const updateInfo = (user) => {
 }
 
 // Get a list of all users information
-export const getAllUsers=(type)=>{
-    return async dispatch =>{
+export const getAllUsers = (type) => {
+    return async dispatch => {
         const res = await req_getAllUserList(type);
         if (res.data.status === 227) {
             dispatch(receiveList(res.data))
@@ -110,3 +115,43 @@ export const getAllUsers=(type)=>{
         }
     }
 }
+
+// ----- chat -----------
+
+export const sendMsg = (obj) => {
+    return dispatch => {
+        initChatIo();
+        console.log('send', obj);
+        socketIoSever.emit('sendMsg', obj);
+    }
+
+}
+
+function initChatIo() {
+    socketIoSever.on('receveMsg', (data) => {
+        console.log('receveMsg', data);
+    })
+}
+// happen in aftering successful login
+async function getChatMsgList(userInfo, dispatch) {
+
+    const cur = {
+        userid: userInfo.data.userid,
+        usertype: userInfo.data.usertype
+    }
+    const response = await req_setReadChatMsg(cur);
+    const res = response.data
+    if (res.status === 227) {
+        const { users, chatMsg } = res.data
+        dispatch(receiveMsgList({ users, chatMsg }))
+    }
+    else {
+
+    }
+
+}
+
+export const receiveMsgList = ({ users, chatMsg}) => ({
+    type: RECEIVE_MSG_LIST,
+    data: { users, chatMsg }
+})

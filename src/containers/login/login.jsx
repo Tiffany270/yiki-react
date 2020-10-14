@@ -29,9 +29,9 @@ class Login extends Component {
 
     componentDidMount(){
         console.log('componentDidMount');
-        axios.get('/allJD').then(x => {
-            console.log(x);
-        });
+        // axios.get('/allJD').then(x => {
+        //     console.log(x);
+        // });
     }
 
     // ----- end ---- Let's to learn some lifecycle of react ---- 
@@ -62,7 +62,6 @@ class Login extends Component {
 
 
     render() {
-
         const user = this.props.user;
         if (user.msg === 'ok') {
             localStorage.setItem('yiki_user', JSON.stringify(user));
@@ -107,6 +106,8 @@ class Login extends Component {
 }
 
 export default connect(
-    state => ({ user: state.user }),
+    state => (
+        { user: state.user }
+        ),
     { login }
 )(Login)
