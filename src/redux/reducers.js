@@ -119,6 +119,6 @@ function chat(state = initChat, action) {
 
 
 // 向外暴露状态：
-export default combineReducers({
+export default combineReducers({//find them in this.pros.xx
     user, getRedirecTo, list, chat
 })

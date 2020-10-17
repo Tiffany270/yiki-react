@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavBar, WhiteSpace, Icon, List, InputItem } from 'antd-mobile'
 import "../chat/componets.scss";
-import axios from "axios";
 import { sendMsg } from '../../redux/actions'
 
 class Chat extends Component {
@@ -14,7 +13,6 @@ class Chat extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.props);
         // const chat_id = this.props.user.userid + "_" + this.props.match.params.userid
         // axios.get('/react_chat/ChatMsgFromId/' + chat_id).then(x => {
 
@@ -46,8 +44,6 @@ class Chat extends Component {
             const chatList = this.state.chatList ? this.state.chatList : []
 
             this.props.sendMsg(sendObj);
-
-
             chatList.push(sendObj);
             this.setState({
                 chatList: chatList,
@@ -57,7 +53,11 @@ class Chat extends Component {
 
     }
     render() {
-        const chatList = this.state.chatList ? this.state.chatList : [];
+        console.log(this.props);
+        const chatObj = this.props.chat;
+        const chat_id1 = this.props.user.userid + "_" + this.props.match.params.userid;
+        const chat_id2 = this.props.match.params.userid + "_" + this.props.user.userid;
+        const chatList = chatObj.chatMsg ? chatObj.chatMsg.filter(x => x.chat_id === chat_id1 || x.chat_id === chat_id2) : [];
         return (
 
             <div id="chat-warpper">
