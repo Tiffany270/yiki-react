@@ -12,17 +12,9 @@ class Chat extends Component {
             chatList: []
         }
     }
-    componentDidMount() {
-        // const chat_id = this.props.user.userid + "_" + this.props.match.params.userid
-        // axios.get('/react_chat/ChatMsgFromId/' + chat_id).then(x => {
+    componentDidUpdate(nextProps) {
 
-        //     if (x.data) {
-        //         this.setState({
-        //             chatList: x.data.data
-        //         })
-        //     }
 
-        // });
     }
     txtChange = (e) => {
         const newVal = e
@@ -41,10 +33,8 @@ class Chat extends Component {
         }
         const content = this.state.txtContent.trim();
         if (content !== '') {
-            const chatList = this.state.chatList ? this.state.chatList : []
-
+            const chatList = this.props.chat.chatList ? this.props.chat.chatList : []
             this.props.sendMsg(sendObj);
-            chatList.push(sendObj);
             this.setState({
                 chatList: chatList,
                 txtContent: ''
@@ -53,8 +43,8 @@ class Chat extends Component {
 
     }
     render() {
-        console.log(this.props);
         const chatObj = this.props.chat;
+        console.log(this.props);
         const chat_id1 = this.props.user.userid + "_" + this.props.match.params.userid;
         const chat_id2 = this.props.match.params.userid + "_" + this.props.user.userid;
         const chatList = chatObj.chatMsg ? chatObj.chatMsg.filter(x => x.chat_id === chat_id1 || x.chat_id === chat_id2) : [];
@@ -73,7 +63,7 @@ class Chat extends Component {
                 <WhiteSpace></WhiteSpace>
 
 
-                <div>
+                <div className="chatPanel">
                     {
                         chatList.map((item, index) => (
                             <div key={index}

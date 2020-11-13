@@ -58,3 +58,9 @@
 }
 
 /* ------chat.jsx---end--- */
+.chatPanel{
+    width: 100%;
+    position: absolute;
+    height: 85%;
+    overflow: scroll;
+}

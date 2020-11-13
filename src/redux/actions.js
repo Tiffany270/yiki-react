@@ -120,20 +120,22 @@ export const getAllUsers = (type) => {
 
 export const sendMsg = (obj) => {
     return dispatch => {
-        initChatIo();
-        console.log('send', obj);
         socketIoSever.emit('sendMsg', obj);
     }
 
 }
 
-function initChatIo() {
+function initChatIo(dispatch, userid) {
     socketIoSever.on('receveMsg', (data) => {
-        console.log('receveMsg', data);
+        console.log('receveMsg',data);
+        if (userid === data.from || userid === data.to) {
+            dispatch(receiveSingleMsg(data))
+        }
     })
 }
 // happen in aftering successful login
 async function getChatMsgList(userInfo, dispatch) {
+    initChatIo(dispatch, userInfo.data.userid);
 
     const cur = {
         userid: userInfo.data.userid,
@@ -151,7 +153,12 @@ async function getChatMsgList(userInfo, dispatch) {
 
 }
 
-export const receiveMsgList = ({ users, chatMsg}) => ({
+const receiveMsgList = ({ users, chatMsg }) => ({
     type: RECEIVE_MSG_LIST,
     data: { users, chatMsg }
+})
+
+const receiveSingleMsg = (chatMsg) => ({
+    type: RECEIVE_MSG,
+    data: {chatMsg }
 })

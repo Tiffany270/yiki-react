@@ -89,7 +89,7 @@ function getRedirecTo(type, header) {
 // ----------- chat ---------
 const initChat = {
     users: {}, // all users info {userid:{username,header}}
-    chatMsgs: [],// current user's chat msgs
+    chatMsg: [],// current user's chat msgs
     unReadCount: 0 // unread msgs's number
 
 }
@@ -106,8 +106,11 @@ function chat(state = initChat, action) {
                 unReadCount: 0
             };
         case RECEIVE_MSG:
-
-            return;
+            return {
+                users: state.users,
+                chatMsg: [...state.chatMsg,  action.data.chatMsg],
+                unReadCount: 0
+            };
 
         default:
             return state;
